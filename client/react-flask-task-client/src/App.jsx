@@ -1,35 +1,74 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './index.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState([]);
+  const [selectedTradeCode, setSelectedTradeCode] = useState('');
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/api/data')
+      .then(response => response.json())
+      .then(data => {
+        setData(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  const uniqueTradeCodes = [...new Set(data.map(item => item.trade_code))];
+
+  const filteredData = selectedTradeCode
+    ? data.filter(item => item.trade_code === selectedTradeCode)
+    : data;
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-4">Stock Market Data</h1>
+      <div className="mb-4">
+        <label htmlFor="tradeCode" className="mr-2">Filter by Trade Code:</label>
+        <select
+          id="tradeCode"
+          className="select select-bordered"
+          value={selectedTradeCode}
+          onChange={(e) => setSelectedTradeCode(e.target.value)}
+        >
+          <option value="">All</option>
+          {uniqueTradeCodes.map((code, index) => (
+            <option key={index} value={code}>{code}</option>
+          ))}
+        </select>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Trade Code</th>
+              <th>Date</th>
+              <th>Open</th>
+              <th>High</th>
+              <th>Low</th>
+              <th>Close</th>
+              <th>Volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((item, index) => (
+              <tr key={index}>
+                <td>{item.trade_code}</td>
+                <td>{item.date}</td>
+                <td>{item.open}</td>
+                <td>{item.high}</td>
+                <td>{item.low}</td>
+                <td>{item.close}</td>
+                <td>{item.volume}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
