@@ -170,7 +170,7 @@ function App() {
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th className='text-black'>Date</th>
                   <th>Trade Code</th>
                   <th>High</th>
                   <th>Low</th>
@@ -185,15 +185,15 @@ function App() {
                   <tr key={index}>
                     {editingRow === index ? (
                       <>
-                        <td><input type="text" name="date" value={item.date} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                        <td><input type="text" name="trade_code" value={item.trade_code} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                        <td><input type="number" name="high" value={item.high} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                        <td><input type="number" name="low" value={item.low} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                        <td><input type="number" name="open" value={item.open} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                        <td><input type="number" name="close" value={item.close} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                        <td><input type="number" name="volume" value={item.volume} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="text" name="date" value={item.date} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="text" name="trade_code" value={item.trade_code} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="high" value={item.high} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="low" value={item.low} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="open" value={item.open} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="close" value={item.close} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="volume" value={item.volume} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
                         <td>
-                          <button onClick={() => handleSave(index)} className="btn btn-primary">Save</button>
+                          <button onClick={() => handleSave(index)} className="btn btn-sm btn-outline btn-info">Save</button>
                         </td>
                       </>
                     ) : (
@@ -206,21 +206,23 @@ function App() {
                         <td>{item.close}</td>
                         <td>{item.volume}</td>
                         <td>
-                          <button onClick={() => handleEdit(index)} className="btn btn-secondary">Edit</button>
-                          <button onClick={() => handleDelete(item.id)} className="btn btn-error">Delete</button>
+                          <div className='flex gap-2'>
+                            <button onClick={() => handleEdit(index)} className="btn btn-sm btn-outline btn-success">Edit</button>
+                            <button onClick={() => handleDelete(item.id)} className="btn btn-sm btn-outline btn-error">Delete</button>
+                          </div>
                         </td>
                       </>
                     )}
                   </tr>
                 ))}
                 <tr>
-                  <td><input type="text" name="date" value={newRow.date} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
-                  <td><input type="text" name="trade_code" value={newRow.trade_code} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
-                  <td><input type="number" name="high" value={newRow.high} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
-                  <td><input type="number" name="low" value={newRow.low} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
-                  <td><input type="number" name="open" value={newRow.open} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
-                  <td><input type="number" name="close" value={newRow.close} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
-                  <td><input type="number" name="volume" value={newRow.volume} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
+                  <td className='text-white'><input type="text" name="date" value={newRow.date} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
+                  <td className='text-white'><input type="text" name="trade_code" value={newRow.trade_code} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
+                  <td className='text-white'><input type="number" name="high" value={newRow.high} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
+                  <td className='text-white'><input type="number" name="low" value={newRow.low} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
+                  <td className='text-white'><input type="number" name="open" value={newRow.open} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
+                  <td className='text-white'><input type="number" name="close" value={newRow.close} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
+                  <td className='text-white'><input type="number" name="volume" value={newRow.volume} onChange={handleNewRowChange} className="input input-bordered w-full" /></td>
                   <td><button onClick={handleAdd} className="btn btn-success">Add</button></td>
                 </tr>
               </tbody>
