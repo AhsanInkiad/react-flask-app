@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Chart as ChartJS, CategoryScale, LinearScale, TimeScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line, Bar } from 'react-chartjs-2';
-import { Chart } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, TimeScale, BarController, BarElement, PointElement, LineController, LineElement, Title, Tooltip, Legend } from 'chart.js';
+
+import { Chart} from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns'; // Adapter for date formatting
-import CountUp from 'react-countup';
+
 import './App.css';
 
 // Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, TimeScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
-
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  TimeScale,
+  BarController,
+  BarElement,
+  PointElement,
+  LineController,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 function App() {
   const [data, setData] = useState([]);
   const [allTradeCodes, setAllTradeCodes] = useState([]);

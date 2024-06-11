@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
+import mimetypes
 
 app = Flask(__name__)
 CORS(app)
@@ -9,6 +10,19 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trade_data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+# Ensure JavaScript files are served with the correct MIME type
+mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('text/css', '.css')
+
+frontend_folder = os.path.join(os.getcwd(), "..", "client", "react-flask-task-client", "dist")
+
+@app.route("/", defaults={"filename": ""})
+@app.route("/<path:filename>")
+def index(filename):
+    if not filename:
+        filename = "index.html"
+    return send_from_directory(frontend_folder, filename, mimetype=mimetypes.guess_type(filename)[0])
 
 class TradeData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
