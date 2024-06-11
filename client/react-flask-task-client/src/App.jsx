@@ -158,7 +158,7 @@ function App() {
 
   const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
- // DATA VISUALIZATION
+  // DATA VISUALIZATION
   const chartData = {
     labels: sortedData.map(item => item.date),
     datasets: [
@@ -249,114 +249,112 @@ function App() {
         </div>
       </div>
 
-      {selectedTradeCode && data.length > 0 && (
-        <>
-          {/* CHART */}
-          <div className="mb-4 py-8 rounded-lg shadow-lg flex border justify-center">
-            <div className='w-3/4'>
-              <p className='text-center mb-8'>Stock Performance Chart:</p>
-              <Chart type="bar" data={chartData} options={chartOptions} />
-            </div>
+
+      <>
+        {/*STOCK PERFORMANCE CHART */}
+        <div className="mb-20 py-8 rounded-lg shadow-lg flex border justify-center">
+          <div className='w-3/4'>
+            <p className='text-center mb-8'>Stock Performance Chart:</p>
+            <Chart type="bar" data={chartData} options={chartOptions} />
+          </div>
+        </div>
+
+        {/* VOLATILITY CHART */}
+        <div className="mb-4 py-8 px-8 rounded-lg shadow-lg border grid grid-flow-row lg:grid-flow-col gap-8">
+          <div className='w-3/4 lg:w-auto'>
+            <p className='text-center mb-8'>Volatility Chart:</p>
+            <Chart type="line" data={volatilityData} options={volatilityOptions} />
           </div>
 
-          {/* VOLATILITY CHART */}
-          <div className="mb-4 py-8 px-8 rounded-lg shadow-lg  border grid grid-flow-col justify-stretch gap-8">
-            <div className=''>
-              <p className='text-center mb-8'>Volatility Chart:</p>
-              <Chart type="line" data={volatilityData} options={volatilityOptions} />
+          <div className='ml-0 lg:ml-4 grid gap-8'>
+            <div className="card w-full bg-green-100 p-4 rounded-lg shadow-lg">
+              <h2 className="lg:text-xl font-bold">Average True Range</h2>
+              <p className={atr ? '' : 'text-sm text-red-500'}>{atr ? atr.toFixed(2) : '(select a trade code)'}</p>
             </div>
-            
-            <div className='ml-4 grid  gap-8'>
-              <div className="card w-full bg-green-100 p-4 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold">Average True Range</h2>
-                <p>{atr ? atr.toFixed(2) : 'Calculating...'}</p>
-              </div>
-              <div className="card w-full bg-blue-100 p-4 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold">Standard Deviation</h2>
-                <p>{standardDeviation ? standardDeviation.toFixed(2) : 'Calculating...'}</p>
-              </div>
-              <div className="card w-full bg-yellow-100 p-4 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold">Maximum Drawdown</h2>
-                <p>{maxDrawdown ? (maxDrawdown * 100).toFixed(2) + '%' : 'Calculating...'}</p>
-              </div>
-              <div className="card w-full bg-red-100 p-4 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold">Daily Range %</h2>
-                <p>{dailyRangePercentage ? dailyRangePercentage.toFixed(2) + '%' : 'Calculating...'}</p>
-              </div>
-              
+            <div className="card w-full bg-blue-100 p-4 rounded-lg shadow-lg">
+              <h2 className="lg:text-xl font-bold">Standard Deviation</h2>
+              <p className={standardDeviation ? '' : 'text-sm text-red-500'}>{standardDeviation ? standardDeviation.toFixed(2) : '(select a trade code)'}</p>
             </div>
-              
-           
+            <div className="card w-full bg-yellow-100 p-4 rounded-lg shadow-lg">
+              <h2 className="lg:text-xl font-bold">Maximum Drawdown</h2>
+              <p className={maxDrawdown ? '' : 'text-sm text-red-500'}>{maxDrawdown ? (maxDrawdown * 100).toFixed(2) + '%' : '(select a trade code)'}</p>
+            </div>
+            <div className="card w-full bg-red-100 p-4 rounded-lg shadow-lg">
+              <h2 className="lg:text-xl font-bold">Daily Range %</h2>
+              <p className={dailyRangePercentage ? '' : 'text-sm text-red-500'}>{dailyRangePercentage ? dailyRangePercentage.toFixed(2) + '%' : '(select a trade code)'}</p>
+            </div>
           </div>
+        </div>
 
-          
-          <div className=" my-20 flex">
-            {/* TABLE */}
-            <div className='overflow-x-auto border rounded-lg p-4 shadow-xl mt-10 '>
-              <table className="table ">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Trade Code</th>
-                    <th>High</th>
-                    <th>Low</th>
-                    <th>Open</th>
-                    <th>Close</th>
-                    <th>Volume</th>
-                    <th>Actions</th>
+
+
+        <div className=" my-20 flex">
+          {/* TABLE */}
+          <div className='overflow-x-auto border rounded-lg p-4 shadow-xl mt-10 '>
+            <table className="table ">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Trade Code</th>
+                  <th>High</th>
+                  <th>Low</th>
+                  <th>Open</th>
+                  <th>Close</th>
+                  <th>Volume</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item, index) => (
+                  <tr key={index}>
+                    {editingRow === index ? (
+                      <>
+                        <td className='text-white'><input type="text" name="date" value={item.date} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="text" name="trade_code" value={item.trade_code} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="high" value={item.high} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="low" value={item.low} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="open" value={item.open} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="close" value={item.close} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td className='text-white'><input type="number" name="volume" value={item.volume} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
+                        <td>
+                          <button onClick={() => handleSave(index)} className="btn btn-sm btn-outline btn-info">Save</button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td>{item.date}</td>
+                        <td>{item.trade_code}</td>
+                        <td>{item.high}</td>
+                        <td>{item.low}</td>
+                        <td>{item.open}</td>
+                        <td>{item.close}</td>
+                        <td>{item.volume}</td>
+                        <td>
+                          <div className='flex gap-2'>
+                            <button onClick={() => handleEdit(index)} className="btn btn-sm btn-outline btn-success">Edit</button>
+                            <button onClick={() => handleDelete(item.id)} className="btn btn-sm btn-outline btn-error">Delete</button>
+                          </div>
+                        </td>
+                      </>
+                    )}
                   </tr>
-                </thead>
-                <tbody>
-                  {data.map((item, index) => (
-                    <tr key={index}>
-                      {editingRow === index ? (
-                        <>
-                          <td className='text-white'><input type="text" name="date" value={item.date} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                          <td className='text-white'><input type="text" name="trade_code" value={item.trade_code} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                          <td className='text-white'><input type="number" name="high" value={item.high} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                          <td className='text-white'><input type="number" name="low" value={item.low} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                          <td className='text-white'><input type="number" name="open" value={item.open} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                          <td className='text-white'><input type="number" name="close" value={item.close} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                          <td className='text-white'><input type="number" name="volume" value={item.volume} onChange={(e) => handleChange(index, e)} className="input input-bordered w-full" /></td>
-                          <td>
-                            <button onClick={() => handleSave(index)} className="btn btn-sm btn-outline btn-info">Save</button>
-                          </td>
-                        </>
-                      ) : (
-                        <>
-                          <td>{item.date}</td>
-                          <td>{item.trade_code}</td>
-                          <td>{item.high}</td>
-                          <td>{item.low}</td>
-                          <td>{item.open}</td>
-                          <td>{item.close}</td>
-                          <td>{item.volume}</td>
-                          <td>
-                            <div className='flex gap-2'>
-                              <button onClick={() => handleEdit(index)} className="btn btn-sm btn-outline btn-success">Edit</button>
-                              <button onClick={() => handleDelete(item.id)} className="btn btn-sm btn-outline btn-error">Delete</button>
-                            </div>
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  ))}
-                  <tr>
-                    <td><input type="text" name="date" value={newRow.date} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
-                    <td><input type="text" name="trade_code" value={newRow.trade_code} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
-                    <td><input type="number" name="high" value={newRow.high} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
-                    <td><input type="number" name="low" value={newRow.low} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
-                    <td><input type="number" name="open" value={newRow.open} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
-                    <td><input type="number" name="close" value={newRow.close} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
-                    <td><input type="number" name="volume" value={newRow.volume} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
-                    <td><button onClick={handleAdd} className="btn btn-outline btn-info">Add</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                ))}
+                <tr>
+                  <td><input type="text" name="date" value={newRow.date} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
+                  <td><input type="text" name="trade_code" value={newRow.trade_code} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
+                  <td><input type="number" name="high" value={newRow.high} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
+                  <td><input type="number" name="low" value={newRow.low} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
+                  <td><input type="number" name="open" value={newRow.open} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
+                  <td><input type="number" name="close" value={newRow.close} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
+                  <td><input type="number" name="volume" value={newRow.volume} onChange={handleNewRowChange} className="input border-black input-bordered w-full text-black bg-white" /></td>
+                  <td><button onClick={handleAdd} className="btn btn-outline btn-info">Add</button></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </>
-      )}
+        </div>
+      </>
+
     </div>
   );
 }
