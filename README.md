@@ -1,6 +1,7 @@
 # React JS and Pyton with SQL
 
 Welcome to the project! This repository contains code for a CRUD application built with ReactJS for the frontend and Flask (Python) for the backend. The application allows users to perform CRUD operations on trade data stored in a SQL database. It has two working branches: 1)jsonModel, 2)sqlModel. 
+Live site link: https://react-flask-app-vqc6.onrender.com/
 
 ## Learning from this Project
 
