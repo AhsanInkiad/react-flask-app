@@ -55,7 +55,7 @@ function App() {
 
   const fetchAllTradeCodes = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/api/trade_data');
+      const response = await axios.get('https://react-flask-app-vqc6.onrender.com/api/trade_data');
       const uniqueTradeCodes = [...new Set(response.data.map(item => item.trade_code))];
       setAllTradeCodes(uniqueTradeCodes);
     } catch (error) {
@@ -65,7 +65,7 @@ function App() {
 
   const fetchData = async (tradeCode) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:5000/api/trade_data?trade_code=${tradeCode}`);
+      const response = await axios.get(`https://react-flask-app-vqc6.onrender.com/api/trade_data?trade_code=${tradeCode}`);
       const sortedData = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
       setData(sortedData);
       calculateMetrics(sortedData);
